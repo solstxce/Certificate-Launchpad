@@ -12,9 +12,9 @@ from dotenv import load_dotenv
 
 
 # Validate Email
-def check_email(email):
-    regex = r'(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}'  # DO NOT CHANGE
-    return bool(re.match(regex, email))
+# def check_email(email):
+#     regex = r'(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}'  # DO NOT CHANGE
+#     return bool(re.match(regex, email))
 
 
 # Shorten the name if it's too long
@@ -36,6 +36,7 @@ def make_certificate(
         font_file: Optional[str] = None,
         starting_position: Optional[Iterable[int]] = None
 ):
+    print("Was here")
     if not template_file:
         template_file = os.getenv('CERTIFICATE_TEMPLATE_FILEPATH')
 
@@ -136,25 +137,24 @@ if __name__ == '__main__':
         recipient_df = file.parse(sheet)
 
         for _, row in recipient_df.iterrows():
-
+            print("Was here")
             recipient_name, recipient_email = row
 
-            if check_email(recipient_email):
-                certificate = make_certificate(recipient_name)
 
-                # Successfully made certificate
-                if certificate:
-                    send_mail(receiver=recipient_email,
-                              certificate_filepath=certificate)
-                    print(">>> ", count, ": ", recipient_email, " : Sent")
-                else:
-                    # Add to error list
-                    error_list.append(recipient_email)
-                    error_count += 1
+            print("Was here")
+            certificate = make_certificate(recipient_name)
+            # Successfully made certificate
+            if certificate:
+                send_mail(receiver=recipient_email,
+                          certificate_filepath=certificate)
+                print(">>> ", count, ": ", recipient_email, " : Sent")
             else:
                 # Add to error list
                 error_list.append(recipient_email)
                 error_count += 1
+        
+                # Add to error list
+
 
             count += 1
 
